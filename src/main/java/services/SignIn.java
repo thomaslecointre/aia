@@ -1,11 +1,18 @@
 package services;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+import javax.crypto.KeyGenerator;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.security.Key;
 
 @Path("/signin")
 public class SignIn {
+
+    private KeyGenerator keyGenerator;
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
@@ -14,17 +21,4 @@ public class SignIn {
         return null;
     }
 
-    /*
-    private String issueToken(String login) {
-        Key key = keyGenerator.generateKey();
-        String jwtToken = Jwts.builder()
-                .setSubject(login)
-                .setIssuer(uriInfo.getAbsolutePath().toString())
-                .setIssuedAt(new Date())
-                .setExpiration(toDate(LocalDateTime.now().plusMinutes(15L)))
-                .signWith(SignatureAlgorithm.HS512, key)
-                .compact();
-        return jwtToken;
-    }
-    */
 }
