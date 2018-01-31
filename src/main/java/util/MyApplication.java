@@ -1,6 +1,7 @@
 package util;
 
 import services.HelloWorld;
+import services.SignIn;
 import services.Users;
 
 import javax.ws.rs.ApplicationPath;
@@ -16,6 +17,7 @@ public class MyApplication extends Application{
     @Override
     public Set<Class<?>> getClasses() {
         HashSet h = new HashSet<Class<?>>();
+        h.add(SignIn.class);
         h.add(HelloWorld.class);
         h.add(Users.class);
         return h;

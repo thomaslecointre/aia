@@ -8,11 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Activities_BDD {
+public class Activities_db {
 
 	Connection conn= null;
-	String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/../lib/databases/Activities_tracker_BDD";
-	public Activities_BDD(String url) {
+	String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/../lib/databases/Activities_tracker_db";
+	public Activities_db(String url) {
 
 	}
 	private void connect() {

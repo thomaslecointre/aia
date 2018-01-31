@@ -1,7 +1,7 @@
 package services;
 
 import com.google.gson.Gson;
-import persistence.Activities_BDD;
+import persistence.Activities_db;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -13,7 +13,7 @@ public class Users {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserList() {
-        Activities_BDD bdd= new Activities_BDD("");
+        Activities_db bdd= new Activities_db("");
 
         return Response.status(200).entity(new Gson().toJson(bdd.getAllUsers())).build();
     }
