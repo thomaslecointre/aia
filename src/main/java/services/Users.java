@@ -1,5 +1,6 @@
 package services;
 
+import com.google.gson.Gson;
 import persistence.Activities_BDD;
 
 import javax.ws.rs.*;
@@ -14,7 +15,7 @@ public class Users {
     public Response getUserList() {
         Activities_BDD bdd= new Activities_BDD("");
 
-        return Response.status(200).entity(bdd.getAllUsers()).build();
+        return Response.status(200).entity(new Gson().toJson(bdd.getAllUsers())).build();
     }
 
     @POST

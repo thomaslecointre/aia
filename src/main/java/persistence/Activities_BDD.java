@@ -11,7 +11,7 @@ import java.util.List;
 public class Activities_BDD {
 
 	Connection conn= null;
-	String url = "jdbc:sqlite:/home/thomas/Téléchargements/Activities_tracker_BDD";
+	String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/../lib/databases/Activities_tracker_BDD";
 	public Activities_BDD(String url) {
 
 	}
