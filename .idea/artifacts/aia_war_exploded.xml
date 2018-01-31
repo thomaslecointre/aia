@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="aia:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/aia</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="aia/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="aia" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Jersey-2.2" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
