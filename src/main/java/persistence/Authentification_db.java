@@ -8,13 +8,13 @@ import java.sql.Statement;
 
 public class Authentification_db {
 
-	Connection conn= null;
-	String url= "jdbc:sqlite:" + System.getProperty("user.dir") + "/../lib/databases/Authentification_db";
+	static Connection conn = null;
+	static String url = "jdbc:sqlite:" + System.getProperty("user.dir") + "/../lib/databases/Authentification_db";
 	
 	public Authentification_db(String url) {
 		connect();
 	}
-	private void connect() {
+	private static void connect() {
 		
 		try {
 			conn = DriverManager.getConnection(url);
@@ -24,7 +24,7 @@ public class Authentification_db {
 		}
 	}
 
-	public LogUser getLogUser(String username,String password){
+	public static LogUser getLogUser(String username,String password){
 		LogUser result = null;
 		connect();
 			try {
@@ -47,7 +47,7 @@ public class Authentification_db {
 		return result;
 		
 	}
-	private void disconnect() {
+	private static void disconnect() {
 		try {
 			conn.close();
 		} catch (SQLException e) {
