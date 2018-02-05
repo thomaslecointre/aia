@@ -35,7 +35,16 @@ public class Authentification_db {
         conn.close();
     }
 
-    public static boolean checkRole(String username, String role) {
-        // TODO
+    public static boolean checkRole(String username, String role) throws SQLException {
+        boolean result = false;
+        connect();
+        Statement statement = conn.createStatement();
+        ResultSet resultat = statement.executeQuery("SELECT * FROM Account WHERE username='" + username +"' ;");
+        disconnect();
+        resultat.next();
+        result=resultat.getString("role").equals(role);
+
+        return result;
+
     }
 }

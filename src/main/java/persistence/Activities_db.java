@@ -138,11 +138,9 @@ public class Activities_db {
 	public static User getUser(String id) throws SQLException {
 		connect();
 		User result=null;
-			Statement statement =conn.createStatement();
-			ResultSet resultat =statement.executeQuery("SELECT * FROM Users where id="+id+";");
-				result=new User(resultat.getInt("id"),resultat.getString("pseudo"),resultat.getString("firstname"),resultat.getString("lastname"));
-
-
+		Statement statement =conn.createStatement();
+		ResultSet resultat =statement.executeQuery("SELECT * FROM Users where id="+id+";");
+		result=new User(resultat.getInt("id"),resultat.getString("pseudo"),resultat.getString("firstname"),resultat.getString("lastname"));
 		disconnect();
 		return result;
 
