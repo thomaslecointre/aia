@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 public class Users {
 
     @GET
+
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserList() {
         Activities_db bdd= new Activities_db("");
