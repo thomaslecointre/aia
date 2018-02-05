@@ -9,7 +9,7 @@
         <module name="aia" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="aia" target="1.8" />
     </bytecodeTargetLevel>
   </component>

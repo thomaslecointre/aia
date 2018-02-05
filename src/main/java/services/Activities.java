@@ -17,7 +17,7 @@ public class Activities {
     @GET
     @Path("/{id}")
     public Response getActivityFromId(@PathParam("id") String id) {
-        // TODO
+
         return null;
     }
 

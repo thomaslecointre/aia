@@ -1,6 +1,7 @@
 package services;
 
 import com.google.gson.Gson;
+import filters.JWTTokenNeeded;
 import persistence.Activities_db;
 import persistence.User;
 
@@ -19,7 +20,7 @@ public class WhoAmI {
     private SecurityContext securityContext;
 
     @GET
-    @Context
+    @JWTTokenNeeded
     @Produces(MediaType.APPLICATION_JSON)
     public Response userInfo() {
         String username = securityContext.getUserPrincipal().getName();

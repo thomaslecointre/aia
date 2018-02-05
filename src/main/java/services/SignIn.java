@@ -39,12 +39,13 @@ public class SignIn {
             String jws = Jwts.builder()
                     .setIssuer("aia")
                     .setSubject(username)
-                    .setHeaderParam("role", logUser.getRole())
+                    .setHeaderParam("typ","JWT")
+                    .claim("role", logUser.getRole())
                     .setIssuedAt(Date.from(Instant.now()))
                     .setExpiration(Date.from(Instant.now().plusSeconds(THIRTY_MINUTES_IN_SECONDS)))
                     .signWith(
-                            SignatureAlgorithm.HS256,
-                            AIAKey.key
+                            SignatureAlgorithm.HS512,
+                            AIAKey.getKey()
                     )
                     .compact();
             return Response.status(200).entity(jws).build();

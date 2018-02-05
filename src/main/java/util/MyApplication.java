@@ -1,8 +1,7 @@
 package util;
 
-import services.HelloWorld;
-import services.SignIn;
-import services.Users;
+import filters.JWTTokenNeededFilter;
+import services.*;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -20,6 +19,10 @@ public class MyApplication extends Application {
         h.add(SignIn.class);
         h.add(HelloWorld.class);
         h.add(Users.class);
+        h.add(WhoAmI.class);
+        h.add(Sessions.class);
+        h.add(Activities.class);
+        h.add(JWTTokenNeededFilter.class);
         return h;
     }
 

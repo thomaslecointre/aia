@@ -1,7 +1,15 @@
 package filters;
 
 import io.jsonwebtoken.impl.TextCodec;
+import io.jsonwebtoken.impl.crypto.MacProvider;
 
-public interface AIAKey {
-    public static final byte[] key = TextCodec.BASE64.decode("Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E=");
+import javax.crypto.Mac;
+import java.security.Key;
+
+public class AIAKey {
+    private static final Key key = MacProvider.generateKey();
+    public static Key getKey(){
+        return key;
+    }
+
 }

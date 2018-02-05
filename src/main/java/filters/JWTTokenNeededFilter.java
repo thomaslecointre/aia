@@ -12,6 +12,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Date;
 
@@ -19,6 +20,8 @@ import java.util.Date;
 @JWTTokenNeeded
 @Priority(Priorities.AUTHENTICATION)
 public class JWTTokenNeededFilter implements ContainerRequestFilter {
+
+    private String message_error="";
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -30,7 +33,12 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
             String token = authorizationHeader.substring("Bearer".length()).trim();
             if (token != null) {
                 // Validate the token
-                Jws<Claims> claims = validateToken(token);
+                Jws<Claims> claims = null;
+                try {
+                    claims = validateToken(token);
+                } catch (SQLException e) {
+                    requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build());
+                }
                 AIAPrincipal principal = buildPrincipal(claims);
                 if (principal != null) {
                     AIAContext context = new AIAContext(principal, requestContext.getSecurityContext().isSecure());
@@ -41,7 +49,7 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
         }
 
         if (!isSecured) {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(message_error).build());
         }
     }
 
@@ -49,14 +57,17 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
         return new AIAPrincipal(claims.getBody().getSubject(), (String) claims.getHeader().get("role"));
     }
 
-    private Jws<Claims> validateToken(String token) {
-        Jws<Claims> claims = Jwts.parser().setSigningKey(AIAKey.key).parseClaimsJws(token);
-        String role = (String) claims.getHeader().get("scope");
+    private Jws<Claims> validateToken(String token) throws SQLException {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(AIAKey.getKey()).parseClaimsJws(token);
+        String role = (String) claims.getBody().get("role");
         String username = claims.getBody().getSubject();
 
-        boolean userHasRole = Authentification_db.checkRole(username, role);
+        boolean userHasRole = false;
+
+        userHasRole = Authentification_db.checkRole(username, role);
 
         if (!userHasRole) {
+            message_error="Bad token: Role does not coincide";
             return null;
         }
 
@@ -64,6 +75,7 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
         Date issuedAt = claims.getBody().getIssuedAt();
         Date expires = claims.getBody().getExpiration();
         if (!now.after(issuedAt) || !now.before(expires)) {
+            message_error="Bad token: token is de-synchronised";
             return null;
         }
 

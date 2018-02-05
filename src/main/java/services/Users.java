@@ -1,23 +1,29 @@
 package services;
 
 import com.google.gson.Gson;
+import filters.JWTTokenNeeded;
 import persistence.Activities_db;
 import persistence.Session;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.sql.SQLException;
 import java.util.List;
 
 @Path("/users")
 public class Users {
 
+    @Context
+    private SecurityContext securityContext;
+
     @GET
 
     @Produces(MediaType.APPLICATION_JSON)
+    @JWTTokenNeeded
     public Response getUserList() {
-
         try {
             return Response.status(200).entity(new Gson().toJson(Activities_db.getAllUsers())).build();
         } catch (SQLException e) {
