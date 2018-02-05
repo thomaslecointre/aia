@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class SignIn {
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
-    public Response verifyLogin(@QueryParam("username") String username, @QueryParam("password") String password) {
+    public Response verifyLogin(@QueryParam("username") String username, @QueryParam("password") String password) throws SQLException {
 
         if (username == null) {
             return Response.status(400).build();
