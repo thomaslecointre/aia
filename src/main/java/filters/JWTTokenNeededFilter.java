@@ -35,15 +35,15 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
                 // Validate the token
                 Jws<Claims> claims = null;
                 try {
-                    claims = validateToken(token);
+                    claims = validateToken(authorizationHeader);
+                    AIAPrincipal principal = buildPrincipal(claims);
+                    if (principal != null) {
+                        AIAContext context = new AIAContext(principal, requestContext.getSecurityContext().isSecure());
+                        requestContext.setSecurityContext(context);
+                        isSecured = true;
+                    }
                 } catch (SQLException e) {
                     requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build());
-                }
-                AIAPrincipal principal = buildPrincipal(claims);
-                if (principal != null) {
-                    AIAContext context = new AIAContext(principal, requestContext.getSecurityContext().isSecure());
-                    requestContext.setSecurityContext(context);
-                    isSecured = true;
                 }
             }
         }
@@ -54,7 +54,7 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
     }
 
     private AIAPrincipal buildPrincipal(Jws<Claims> claims) {
-        return new AIAPrincipal(claims.getBody().getSubject(), (String) claims.getHeader().get("role"));
+        return new AIAPrincipal(claims.getBody().getSubject(), (String) claims.getBody().get("role"));
     }
 
     private Jws<Claims> validateToken(String token) throws SQLException {

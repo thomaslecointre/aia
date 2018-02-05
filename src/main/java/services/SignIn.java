@@ -44,7 +44,7 @@ public class SignIn {
                     .setIssuedAt(Date.from(Instant.now()))
                     .setExpiration(Date.from(Instant.now().plusSeconds(THIRTY_MINUTES_IN_SECONDS)))
                     .signWith(
-                            SignatureAlgorithm.HS512,
+                            SignatureAlgorithm.HS256,
                             AIAKey.getKey()
                     )
                     .compact();
