@@ -39,6 +39,7 @@ public class SignIn {
             String jws = Jwts.builder()
                     .setIssuer("aia")
                     .setSubject(username)
+                    .setHeaderParam("role", logUser.getRole())
                     .setIssuedAt(Date.from(Instant.now()))
                     .setExpiration(Date.from(Instant.now().plusSeconds(THIRTY_MINUTES_IN_SECONDS)))
                     .signWith(
