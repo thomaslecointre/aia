@@ -100,10 +100,9 @@ public class Activities_db {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			for(User u:resultlist){
+			for(User u:resultlist) {
 				System.out.println(u.getId());
 			}
-			
 		disconnect();
 		return resultlist;
 	}
@@ -127,6 +126,7 @@ public class Activities_db {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		disconnect();
 	}
 	public List<Activity> getAllActivities() {
 		connect();
@@ -137,9 +137,7 @@ public class Activities_db {
 				while(resultat.next()){
 					resultlist.add(new Activity(resultat.getInt("id"),resultat.getString("name")));
 				}
-				
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			System.out.println(resultlist.get(0).getName());
@@ -156,7 +154,6 @@ public class Activities_db {
 			
 			result= new Activity(i,resultat.getString("Name"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(result.getName());
@@ -173,14 +170,33 @@ public class Activities_db {
 				while(resultat.next()){
 					resultlist.add(new Property(resultat.getInt("id"),resultat.getInt("activity_id"),resultat.getString("name"),Value_type.valueOf(resultat.getString("value_type"))));
 				}
-				
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			System.out.println(resultlist.get(0).getName());
 		disconnect();
 		return resultlist;
 		
+	}
+	public void removeActivityOf(String id){
+		connect();
+		try {
+			Statement statement =conn.createStatement();
+			ResultSet resultat=statement.executeQuery("remove from activites where id="+id+";");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
+	}
+
+	public void removeSessionOf(String id,String userid ){
+		connect();
+		try {
+			Statement statement =conn.createStatement();
+			ResultSet resultat=statement.executeQuery("remove from sessions where id="+id+"and user_id="+userid+" ;");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		disconnect();
 	}
 }
