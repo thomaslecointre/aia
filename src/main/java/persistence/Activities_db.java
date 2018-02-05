@@ -194,6 +194,7 @@ public class Activities_db {
 		try {
 			Statement statement =conn.createStatement();
 			ResultSet resultat=statement.executeQuery("remove from sessions where id="+id+"and user_id="+userid+" ;");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
