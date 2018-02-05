@@ -1,21 +1,29 @@
 package services;
 
+import com.google.gson.Gson;
+import persistence.Activities_db;
+
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 
 @Path("/sessions")
 public class Sessions {
 
     @GET
     @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getSessionFromId(@PathParam("id") String id) {
-        // TODO
-        return null;
+        try {
+            return Response.status(500).entity(new Gson().toJson(Activities_db.getAllSessionsof(Integer.parseInt(id)))).build();
+        } catch (SQLException e) {
+            return Response.serverError().build();
+        }
     }
 
     @POST
     public Response createSession(@QueryParam("id") String id) { // Parameters?
-        // TODO
         return null;
     }
 
