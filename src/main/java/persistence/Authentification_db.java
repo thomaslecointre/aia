@@ -34,4 +34,8 @@ public class Authentification_db {
     private static void disconnect() throws SQLException {
         conn.close();
     }
+
+    public static boolean checkRole(String username, String role) {
+        // TODO
+    }
 }
