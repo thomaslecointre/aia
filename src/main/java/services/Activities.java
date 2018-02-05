@@ -1,5 +1,7 @@
 package services;
 
+import persistence.Activities_db;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
@@ -8,7 +10,7 @@ public class Activities {
 
     @GET
     public Response listActivities() {
-        // TODO
+        //Activities_db.getAllSession();
         return null;
     }
 
