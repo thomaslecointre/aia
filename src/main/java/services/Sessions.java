@@ -17,7 +17,7 @@ public class Sessions {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSessionFromId(@PathParam("id") String id) {
         try {
-            return Response.status(500).entity(new Gson().toJson(Activities_db.getAllSessionsof(Integer.parseInt(id)))).build();
+            return Response.status(Response.Status.OK).entity(new Gson().toJson(Activities_db.getAllSessionsof(Integer.parseInt(id)))).build();
         } catch (SQLException e) {
             return Response.serverError().build();
         }
