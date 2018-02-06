@@ -65,31 +65,44 @@ public class Sessions {
     @Produces(MediaType.TEXT_PLAIN)
     @JWTTokenNeeded
     public Response modifySession(@PathParam("id") String id, @QueryParam("activityName") String activityName, @QueryParam("date") String date) {
+        boolean b_activityName = true;
+        boolean b_date = true;
         if (id == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity("{id} parameter non existant.").build();
         }
         if (activityName == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("{activityName} parameter non existant.").build();
+            b_activityName = false;
         } else {
             try {
                 Activity activity = Activities_db.getActivity(activityName);
                 int activityId = activity.getId();
                 boolean sqlError = Activities_db.updateSession("activity_id", Integer.toString(activityId), id);
             } catch (SQLException e) {
-                e.printStackTrace();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
             }
 
         }
         if (date == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("{date} parameter non existant.").build();
+            b_date = false;
         } else {
             try {
                 boolean sqlError = Activities_db.updateSession("date", date, id);
             } catch (SQLException e) {
-                e.printStackTrace();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
             }
         }
-        return null;
+
+        if (!b_activityName && !b_date) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("At least one parameter is required.").build();
+        } else {
+            if (b_activityName && !b_date) {
+                return Response.status(Response.Status.OK).entity("Activity name updated.").build();
+            } else if (b_date && !b_activityName) {
+                return Response.status(Response.Status.OK).entity("Date updated.").build();
+            } else {
+                return Response.status(Response.Status.OK).entity("Activity name and date updated.").build();
+            }
+        }
     }
 
     @PUT
