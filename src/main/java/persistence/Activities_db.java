@@ -168,11 +168,23 @@ public class Activities_db {
     }
 
 
-    public static Activity getActivity(String activityName) {
-        return null;
+    public static Activity getActivity(String activityName) throws SQLException {
+        connect();
+        Activity result = null;
+        Statement statement = conn.createStatement();
+        ResultSet resultat = statement.executeQuery("SELECT * FROM Activites where name=\'"+ activityName +"\';");
+        result = new Activity(resultat.getInt("id"), activityName);
+        System.out.println(result.getName());
+        disconnect();
+        return result;
     }
 
-    public static boolean createSession(int userId, int activityId, String date) {
-        return false;
+    public static boolean createSession(int userId, int activityId, String date) throws SQLException {
+        connect();
+        Statement statement = conn.createStatement();
+        boolean resultat = statement.execute("INSERT INTO Sessions(user_id,activity_id,date) values(" + userId + "," + activityId+ "," + date + ");");
+
+        disconnect();
+        return resultat;
     }
 }

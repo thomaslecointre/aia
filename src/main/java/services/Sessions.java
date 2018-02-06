@@ -35,21 +35,20 @@ public class Sessions {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     @JWTTokenNeeded
-    public Response createSession(@QueryParam("activityName") String activityName) { // Parameters?
+    public Response createSession(@QueryParam("activityName") String activityName,@QueryParam("date")String date) { // Parameters?
         String username = securityContext.getUserPrincipal().getName();
         try {
             User user = Activities_db.getUser(username);
             Activity activity = Activities_db.getActivity(activityName);
-            boolean sqlError = Activities_db.createSession(user.getId(), activity.getId(), new Date().from(Instant.now()).toString());
+            boolean sqlError = Activities_db.createSession(user.getId(), activity.getId(), date);
             if (!sqlError) {
-                Response.status(Response.Status.OK).entity("Session " + activityName + " of " + username + " created successfully").build();
+                return Response.status(Response.Status.OK).entity("Session " + activityName + " of " + username + " created successfully").build();
             } else {
-                Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Session creation failed").build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Session creation failed").build();
             }
         } catch (SQLException e) {
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
-        return null;
     }
 
     @PUT
