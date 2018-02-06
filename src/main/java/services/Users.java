@@ -36,7 +36,7 @@ public class Users {
         try {
             boolean sqlError = Activities_db.createUser(username, firstname, lastname);
             if (!sqlError) {
-                return Response.status(Response.Status.CREATED).entity("User created successfully").build();
+                return Response.status(Response.Status.CREATED).entity("User created successfully.").build();
             } else {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("User creation failed.").build();
             }
