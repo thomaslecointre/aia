@@ -196,4 +196,8 @@ public class Activities_db {
         disconnect();
         return resultat;
     }
+
+    public static List<Session> getAllSessions() {
+        return null;
+    }
 }

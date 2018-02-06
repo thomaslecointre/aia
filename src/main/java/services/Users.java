@@ -88,7 +88,7 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSessionsFromActivity(@PathParam("id") String id, @PathParam("ida") String ida) {
         try {
-            List<Session> sessions = Activities_db.getActivitiesByIdof(Integer.parseInt(id), Integer.parseInt(ida)));
+            List<Session> sessions = Activities_db.getActivitiesByIdof(Integer.parseInt(id), Integer.parseInt(ida));
             if (!sessions.isEmpty()) {
                 return Response.status(Response.Status.FOUND).entity(new Gson().toJson(sessions)).build();
             } else {
