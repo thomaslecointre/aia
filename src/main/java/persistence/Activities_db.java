@@ -145,4 +145,15 @@ public class Activities_db {
 		return result;
 
 	}
+
+	public static User getUser(int id) throws SQLException {
+		connect();
+		User result=null;
+		Statement statement =conn.createStatement();
+		ResultSet resultat =statement.executeQuery("SELECT * FROM Users where id='"+id+"';");
+		result=new User(resultat.getInt("id"),resultat.getString("username"),resultat.getString("firstname"),resultat.getString("lastname"));
+		disconnect();
+		return result;
+
+	}
 }

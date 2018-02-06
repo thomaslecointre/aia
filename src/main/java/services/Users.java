@@ -21,7 +21,6 @@ public class Users {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @JWTTokenNeeded
     public Response getUserList() {
         try {
             return Response.status(200).entity(new Gson().toJson(Activities_db.getAllUsers())).build();
@@ -47,9 +46,9 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") String id) {
         try {
-            return Response.status(200).entity(new Gson().toJson(Activities_db.getUser(id))).build();
+            return Response.status(200).entity(new Gson().toJson(Activities_db.getUser(Integer.parseInt(id)))).build();
         } catch (SQLException e) {
-            return Response.serverError().build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
 
