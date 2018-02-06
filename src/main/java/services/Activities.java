@@ -31,6 +31,9 @@ public class Activities {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getActivityFromId(@PathParam("id") String id) {
         try {
+            if (id == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{id} parameter non existant.").build();
+            }
             Activity activity = Activities_db.getActivity(Integer.parseInt(id));
             if (activity != null) {
                 return Response.status(Response.Status.FOUND).entity(new Gson().toJson(activity)).build();

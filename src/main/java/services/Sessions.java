@@ -26,6 +26,9 @@ public class Sessions {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSessionFromId(@PathParam("id") String id) {
         try {
+            if (id == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{id} parameter non existant.").build();
+            }
             return Response.status(Response.Status.OK).entity(new Gson().toJson(Activities_db.getAllSessionsof(Integer.parseInt(id)))).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -36,6 +39,12 @@ public class Sessions {
     @Produces(MediaType.TEXT_PLAIN)
     @JWTTokenNeeded
     public Response createSession(@QueryParam("activityName") String activityName,@QueryParam("date")String date) { // Parameters?
+        if (activityName == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("{activityName} parameter non existant.").build();
+        }
+        if (date == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("{date} parameter non existant.").build();
+        }
         String username = securityContext.getUserPrincipal().getName();
         try {
             User user = Activities_db.getUser(username);

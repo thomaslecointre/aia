@@ -66,6 +66,9 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") String id) {
         try {
+            if (id == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{id} parameter non existant.").build();
+            }
             User user = Activities_db.getUser(Integer.parseInt(id));
             if (user != null) {
                 return Response.status(Response.Status.FOUND).entity(new Gson().toJson(user)).build();
@@ -82,6 +85,9 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSessions(@PathParam("id") String id) {
         try {
+            if (id == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{id} parameter non existant.").build();
+            }
             List<Session> sessions = Activities_db.getAllSessionsof(Integer.parseInt(id));
             if (!sessions.isEmpty()) {
                 return Response.status(Response.Status.FOUND).entity(new Gson().toJson(sessions)).build();
@@ -98,6 +104,12 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSessionsFromActivity(@PathParam("id") String id, @PathParam("ida") String ida) {
         try {
+            if (id == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{username} parameter non existant.").build();
+            }
+            if (ida == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{ida} parameter non existant.").build();
+            }
             List<Session> sessions = Activities_db.getActivitiesByIdof(Integer.parseInt(id), Integer.parseInt(ida));
             if (!sessions.isEmpty()) {
                 return Response.status(Response.Status.FOUND).entity(new Gson().toJson(sessions)).build();
@@ -114,6 +126,9 @@ public class Users {
     @JWTTokenNeeded
     public Response deleteUser(@QueryParam("username") String username) {
         try {
+            if (username == null) {
+                return Response.status(Response.Status.BAD_REQUEST).entity("{username} parameter non existant.").build();
+            }
             boolean sqlError = Activities_db.removeUser(username);
             if (!sqlError) {
                 return Response.status(Response.Status.OK).entity("User removed successfully.").build();
