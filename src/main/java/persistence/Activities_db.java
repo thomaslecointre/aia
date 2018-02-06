@@ -187,4 +187,13 @@ public class Activities_db {
         disconnect();
         return resultat;
     }
+
+    public static boolean removeUser(String name) throws SQLException {
+        connect();
+        Statement statement = conn.createStatement();
+        boolean resultat = statement.execute(" DELETE FROM Users WHERE username=\'"+name+"\';");
+
+        disconnect();
+        return resultat;
+    }
 }
