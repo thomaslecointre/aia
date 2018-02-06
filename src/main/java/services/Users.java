@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import filters.JWTTokenNeeded;
 import persistence.Activities_db;
 import persistence.Session;
+import persistence.User;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -23,7 +24,12 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserList() {
         try {
-            return Response.status(Response.Status.FOUND).entity(new Gson().toJson(Activities_db.getAllUsers())).build();
+            List<User> users = Activities_db.getAllUsers();
+            if (!users.isEmpty()) {
+                Response.status(Response.Status.FOUND).entity(new Gson().toJson(users)).build();
+            } else {
+                Response.status(Response.Status.NO_CONTENT).entity("No users found.").build();
+            }
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -50,7 +56,12 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") String id) {
         try {
-            return Response.status(Response.Status.FOUND).entity(new Gson().toJson(Activities_db.getUser(Integer.parseInt(id)))).build();
+            User user = Activities_db.getUser(Integer.parseInt(id));
+            if (user != null) {
+                return Response.status(Response.Status.FOUND).entity(new Gson().toJson(user)).build();
+            } else {
+                return Response.status(Response.Status.NO_CONTENT).entity("No user found.").build();
+            }
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -60,27 +71,42 @@ public class Users {
     @Path("/{id}/sessions")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSessions(@PathParam("id") String id) {
-        List<Session> l_session = null;
         try {
-            l_session = Activities_db.getAllSessionsof(Integer.parseInt(id));
+            List<Session> sessions = Activities_db.getAllSessionsof(Integer.parseInt(id));
+            if (!sessions.isEmpty()) {
+                return Response.status(Response.Status.FOUND).entity(new Gson().toJson(sessions)).build();
+            } else {
+                return Response.status(Response.Status.NO_CONTENT).entity("No sessions found.").build();
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
-        if (l_session != null) {
-            return Response.status(200).entity(new Gson().toJson(l_session)).build();
-        }
-        return Response.status(404).entity("404 error").build();
     }
 
     @GET
     @Path("/{id}/activities/{ida}/sessions")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSessionsFromActivity(@PathParam("id") String id, @PathParam("ida") String ida) {
-
         try {
             return Response.status(200).entity(new Gson().toJson(Activities_db.getActivitiesByIdof(Integer.parseInt(id), Integer.parseInt(ida)))).build();
         } catch (SQLException e) {
             return Response.serverError().build();
+        }
+    }
+
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    @JWTTokenNeeded
+    public Response deleteUser(@QueryParam("username") String username) {
+        try {
+            boolean sqlError = Activities_db.removeUser(username);
+            if (!sqlError) {
+                return Response.status(Response.Status.OK).entity("User removed successfully.").build();
+            } else {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("User removal failed.").build();
+            }
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
 
