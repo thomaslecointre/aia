@@ -39,12 +39,12 @@ public class Authentification_db {
         boolean result = false;
         connect();
         Statement statement = conn.createStatement();
-        String test= "SELECT * FROM Account WHERE username='"+usernam+"' ;";
+        String test = "SELECT * FROM Account WHERE username='" + usernam + "' ;";
         System.out.println(test);
         ResultSet resultat = statement.executeQuery(test);
 
         resultat.next();
-        result=resultat.getString("role").equals(role);
+        result = resultat.getString("role").equals(role);
         disconnect();
         return result;
 
