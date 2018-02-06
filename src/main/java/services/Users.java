@@ -23,9 +23,9 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserList() {
         try {
-            return Response.status(200).entity(new Gson().toJson(Activities_db.getAllUsers())).build();
+            return Response.status(Response.Status.FOUND).entity(new Gson().toJson(Activities_db.getAllUsers())).build();
         } catch (SQLException e) {
-            return Response.serverError().build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
 
@@ -34,8 +34,8 @@ public class Users {
     @JWTTokenNeeded
     public Response createUser(@QueryParam("username") String username, @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname) {
         try {
-            boolean userCreated = Activities_db.createUser(username, firstname, lastname);
-            if (userCreated) {
+            boolean sqlError = Activities_db.createUser(username, firstname, lastname);
+            if (!sqlError) {
                 return Response.status(Response.Status.CREATED).entity("User created successfully").build();
             } else {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("User creation failed.").build();

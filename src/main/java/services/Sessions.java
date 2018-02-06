@@ -19,7 +19,7 @@ public class Sessions {
         try {
             return Response.status(Response.Status.OK).entity(new Gson().toJson(Activities_db.getAllSessionsof(Integer.parseInt(id)))).build();
         } catch (SQLException e) {
-            return Response.serverError().build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
 
@@ -27,6 +27,7 @@ public class Sessions {
     @Produces(MediaType.TEXT_PLAIN)
     @JWTTokenNeeded
     public Response createSession(@QueryParam("id") String id) { // Parameters?
+        // TODO
         return null;
     }
 
@@ -34,7 +35,7 @@ public class Sessions {
     @Path("/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     @JWTTokenNeeded
-    public Response modifySession(@PathParam("id") String id) {
+    public Response modifySession(@QueryParam("id") String id) {
         // TODO
         return null;
     }
@@ -43,7 +44,7 @@ public class Sessions {
     @Path("/{id}/properties/{idp}")
     @Produces(MediaType.TEXT_PLAIN)
     @JWTTokenNeeded
-    public Response modifyPropertyFromId(@PathParam("id") String id, @PathParam("idp") String idp) {
+    public Response modifyPropertyFromId(@QueryParam("id") String id, @QueryParam("idp") String idp) {
         // TODO
         return null;
     }
@@ -51,7 +52,7 @@ public class Sessions {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteProperty(@PathParam("id") String id) {
+    public Response deleteProperty(@QueryParam("id") String id) {
         // TODO
         return null;
     }

@@ -21,7 +21,7 @@ import java.util.Date;
 @Priority(Priorities.AUTHENTICATION)
 public class JWTTokenNeededFilter implements ContainerRequestFilter {
 
-    private String message_error="";
+    private String message_error = "";
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -67,7 +67,7 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
         userHasRole = Authentification_db.checkRole(username, role);
 
         if (!userHasRole) {
-            message_error="Bad token: Role does not coincide";
+            message_error = "Bad token: Role does not coincide";
             return null;
         }
 
@@ -75,7 +75,7 @@ public class JWTTokenNeededFilter implements ContainerRequestFilter {
         Date issuedAt = claims.getBody().getIssuedAt();
         Date expires = claims.getBody().getExpiration();
         if (!now.after(issuedAt) || !now.before(expires)) {
-            message_error="Bad token: token is de-synchronised";
+            message_error = "Bad token: token is de-synchronised";
             return null;
         }
 

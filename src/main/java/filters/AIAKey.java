@@ -10,13 +10,15 @@ import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 
 public class AIAKey {
-    private static  Key key = null;
-    public static  final SignatureAlgorithm signatureAlgorithm= SignatureAlgorithm.HS256;
-    public static Key getKey(){
+    private static Key key = null;
+    public static final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
+    public static Key getKey() {
         return key;
     }
+
     static {
         byte[] barray = DatatypeConverter.parseBase64Binary("c2VjcmV0");
-        key =new SecretKeySpec(barray,signatureAlgorithm.getJcaName());
+        key = new SecretKeySpec(barray, signatureAlgorithm.getJcaName());
     }
 }

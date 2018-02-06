@@ -26,11 +26,11 @@ public class SignIn {
     public Response verifyLogin(@QueryParam("username") String username, @QueryParam("password") String password) throws SQLException {
 
         if (username == null) {
-            return Response.status(400).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("{username} parameter non existant.").build();
         }
 
         if (password == null) {
-            return Response.status(400).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity("{password} parameter non existant.").build();
         }
 
         LogUser logUser = Authentification_db.getLogUser(username, password);
@@ -39,7 +39,7 @@ public class SignIn {
             String jws = Jwts.builder()
                     .setIssuer("aia")
                     .setSubject(username)
-                    .setHeaderParam("typ","JWT")
+                    .setHeaderParam("typ", "JWT")
                     .claim("role", logUser.getRole())
                     .setIssuedAt(Date.from(Instant.now()))
                     .setExpiration(Date.from(Instant.now().plusSeconds(THIRTY_MINUTES_IN_SECONDS)))
@@ -48,9 +48,9 @@ public class SignIn {
                             AIAKey.getKey()
                     )
                     .compact();
-            return Response.status(200).entity(jws).build();
+            return Response.status(Response.Status.OK).entity(jws).build();
         } else {
-            return Response.status(400).build();
+            return Response.status(Response.Status.NOT_FOUND).entity("User was not found during authentication.").build();
         }
     }
 

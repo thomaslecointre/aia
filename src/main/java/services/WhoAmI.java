@@ -26,7 +26,7 @@ public class WhoAmI {
         String username = securityContext.getUserPrincipal().getName();
         try {
             User user = Activities_db.getUser(username);
-            return Response.status(200).entity(new Gson().toJson(user)).build();
+            return Response.status(Response.Status.FOUND).entity(new Gson().toJson(user)).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
