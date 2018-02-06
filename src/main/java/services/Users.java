@@ -26,9 +26,9 @@ public class Users {
         try {
             List<User> users = Activities_db.getAllUsers();
             if (!users.isEmpty()) {
-                Response.status(Response.Status.FOUND).entity(new Gson().toJson(users)).build();
+                return Response.status(Response.Status.FOUND).entity(new Gson().toJson(users)).build();
             } else {
-                Response.status(Response.Status.NO_CONTENT).entity("No users found.").build();
+                return Response.status(Response.Status.NO_CONTENT).entity("No users found.").build();
             }
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
@@ -88,9 +88,14 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSessionsFromActivity(@PathParam("id") String id, @PathParam("ida") String ida) {
         try {
-            return Response.status(200).entity(new Gson().toJson(Activities_db.getActivitiesByIdof(Integer.parseInt(id), Integer.parseInt(ida)))).build();
+            List<Session> sessions = Activities_db.getActivitiesByIdof(Integer.parseInt(id), Integer.parseInt(ida)));
+            if (!sessions.isEmpty()) {
+                return Response.status(Response.Status.FOUND).entity(new Gson().toJson(sessions)).build();
+            } else {
+                return Response.status(Response.Status.NO_CONTENT).entity("No sessions found.").build();
+            }
         } catch (SQLException e) {
-            return Response.serverError().build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
 
