@@ -34,11 +34,15 @@ public class Users {
     @JWTTokenNeeded
     public Response createUser(@QueryParam("username") String username, @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname) {
         try {
-            Activities_db.createUser(username, firstname, lastname);
+            boolean userCreated = Activities_db.createUser(username, firstname, lastname);
+            if (userCreated) {
+                return Response.status(Response.Status.CREATED).entity("User created successfully").build();
+            } else {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("User creation failed.").build();
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
-        return Response.status(200).build();
     }
 
     @GET
@@ -46,7 +50,7 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@PathParam("id") String id) {
         try {
-            return Response.status(200).entity(new Gson().toJson(Activities_db.getUser(Integer.parseInt(id)))).build();
+            return Response.status(Response.Status.FOUND).entity(new Gson().toJson(Activities_db.getUser(Integer.parseInt(id)))).build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
