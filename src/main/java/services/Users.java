@@ -20,7 +20,6 @@ public class Users {
     private SecurityContext securityContext;
 
     @GET
-
     @Produces(MediaType.APPLICATION_JSON)
     @JWTTokenNeeded
     public Response getUserList() {
@@ -32,6 +31,8 @@ public class Users {
     }
 
     @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    @JWTTokenNeeded
     public Response createUser(@QueryParam("username") String username, @QueryParam("firstname") String firstname, @QueryParam("lastname") String lastname) {
         try {
             Activities_db.createUser(username, firstname, lastname);
@@ -54,6 +55,7 @@ public class Users {
 
     @GET
     @Path("/{id}/sessions")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getSessions(@PathParam("id") String id) {
         List<Session> l_session = null;
         try {
@@ -69,6 +71,7 @@ public class Users {
 
     @GET
     @Path("/{id}/activities/{ida}/sessions")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getSessionsFromActivity(@PathParam("id") String id, @PathParam("ida") String ida) {
 
         try {

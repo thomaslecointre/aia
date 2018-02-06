@@ -17,7 +17,6 @@ public class MyApplication extends Application {
     public Set<Class<?>> getClasses() {
         HashSet h = new HashSet<Class<?>>();
         h.add(SignIn.class);
-        h.add(HelloWorld.class);
         h.add(Users.class);
         h.add(WhoAmI.class);
         h.add(Sessions.class);

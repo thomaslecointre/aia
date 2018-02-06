@@ -1,6 +1,7 @@
 package services;
 
 import com.google.gson.Gson;
+import filters.JWTTokenNeeded;
 import persistence.Activities_db;
 
 import javax.ws.rs.*;
@@ -23,12 +24,16 @@ public class Sessions {
     }
 
     @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    @JWTTokenNeeded
     public Response createSession(@QueryParam("id") String id) { // Parameters?
         return null;
     }
 
     @PUT
     @Path("/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    @JWTTokenNeeded
     public Response modifySession(@PathParam("id") String id) {
         // TODO
         return null;
@@ -36,6 +41,8 @@ public class Sessions {
 
     @PUT
     @Path("/{id}/properties/{idp}")
+    @Produces(MediaType.TEXT_PLAIN)
+    @JWTTokenNeeded
     public Response modifyPropertyFromId(@PathParam("id") String id, @PathParam("idp") String idp) {
         // TODO
         return null;
@@ -43,6 +50,7 @@ public class Sessions {
 
     @DELETE
     @Path("/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
     public Response deleteProperty(@PathParam("id") String id) {
         // TODO
         return null;
