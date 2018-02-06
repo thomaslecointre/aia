@@ -77,6 +77,9 @@ public class Sessions {
                 Activity activity = Activities_db.getActivity(activityName);
                 int activityId = activity.getId();
                 boolean sqlError = Activities_db.updateSession("activity_id", Integer.toString(activityId), id);
+                if (sqlError) {
+                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to update activity name.").build();
+                }
             } catch (SQLException e) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
             }
@@ -87,6 +90,9 @@ public class Sessions {
         } else {
             try {
                 boolean sqlError = Activities_db.updateSession("date", date, id);
+                if (sqlError) {
+                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to update date.").build();
+                }
             } catch (SQLException e) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
             }
