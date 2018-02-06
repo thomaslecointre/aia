@@ -168,4 +168,11 @@ public class Activities_db {
     }
 
 
+    public static Activity getActivity(String activityName) {
+        return null;
+    }
+
+    public static boolean createSession(int userId, int activityId, String date) {
+        return false;
+    }
 }

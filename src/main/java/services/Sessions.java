@@ -3,14 +3,23 @@ package services;
 import com.google.gson.Gson;
 import filters.JWTTokenNeeded;
 import persistence.Activities_db;
+import persistence.Activity;
+import persistence.User;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.util.Date;
 
 @Path("/sessions")
 public class Sessions {
+
+    @Context
+    private SecurityContext securityContext;
 
     @GET
     @Path("/{id}")
@@ -26,8 +35,20 @@ public class Sessions {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     @JWTTokenNeeded
-    public Response createSession(@QueryParam("id") String id) { // Parameters?
-        // TODO
+    public Response createSession(@QueryParam("activityName") String activityName) { // Parameters?
+        String username = securityContext.getUserPrincipal().getName();
+        try {
+            User user = Activities_db.getUser(username);
+            Activity activity = Activities_db.getActivity(activityName);
+            boolean sqlError = Activities_db.createSession(user.getId(), activity.getId(), new Date().from(Instant.now()).toString());
+            if (!sqlError) {
+                Response.status(Response.Status.OK).entity("Session " + activityName + " of " + username + " created successfully").build();
+            } else {
+                Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Session creation failed").build();
+            }
+        } catch (SQLException e) {
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
         return null;
     }
 
