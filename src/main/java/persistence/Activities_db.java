@@ -26,9 +26,9 @@ public class Activities_db {
         connect();
         List<Session> resultlist = new ArrayList<Session>();
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT * FROM Sessions WHERE user_id=" + ID + ";");
-        while (resultat.next()) {
-            resultlist.add(new Session(resultat.getInt("id"), resultat.getInt("user_id"), resultat.getInt("activity_id"), resultat.getString("date")));
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM Sessions WHERE user_id=" + ID + ";");
+        while (resultSet.next()) {
+            resultlist.add(new Session(resultSet.getInt("id"), resultSet.getInt("user_id"), resultSet.getInt("activity_id"), resultSet.getString("date")));
         }
         disconnect();
         return resultlist;
@@ -39,9 +39,9 @@ public class Activities_db {
         connect();
         List<Session> resultlist = new ArrayList<Session>();
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT * FROM Sessions WHERE user_id=" + ID + " and activity_id=" + ida + ";");
-        while (resultat.next()) {
-            resultlist.add(new Session(resultat.getInt("id"), resultat.getInt("user_id"), resultat.getInt("activity_id"), resultat.getString("date")));
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM Sessions WHERE user_id=" + ID + " and activity_id=" + ida + ";");
+        while (resultSet.next()) {
+            resultlist.add(new Session(resultSet.getInt("id"), resultSet.getInt("user_id"), resultSet.getInt("activity_id"), resultSet.getString("date")));
         }
         disconnect();
         return resultlist;
@@ -52,9 +52,9 @@ public class Activities_db {
         connect();
         List<Session> resultlist = new ArrayList<Session>();
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT * FROM Sessions WHERE activity_id=" + ida + ";");
-        while (resultat.next()) {
-            resultlist.add(new Session(resultat.getInt("id"), resultat.getInt("user_id"), resultat.getInt("activity_id"), resultat.getString("date")));
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM Sessions WHERE activity_id=" + ida + ";");
+        while (resultSet.next()) {
+            resultlist.add(new Session(resultSet.getInt("id"), resultSet.getInt("user_id"), resultSet.getInt("activity_id"), resultSet.getString("date")));
         }
 
         disconnect();
@@ -67,9 +67,9 @@ public class Activities_db {
         connect();
         List<User> resultlist = new ArrayList<User>();
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT * FROM Users ;");
-        while (resultat.next()) {
-            resultlist.add(new User(resultat.getInt("id"), resultat.getString("username"), resultat.getString("firstname"), resultat.getString("lastname")));
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM Users ;");
+        while (resultSet.next()) {
+            resultlist.add(new User(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("firstname"), resultSet.getString("lastname")));
         }
         disconnect();
         return resultlist;
@@ -83,19 +83,19 @@ public class Activities_db {
     public static boolean createUser(String string, String string2, String string3) throws SQLException {
         connect();
         Statement statement = conn.createStatement();
-        boolean resultat = statement.execute("INSERT INTO Users(username,firstname,lastname) values('" + string + "','" + string2 + "','" + string3 + "');");
+        boolean resultSet = statement.execute("INSERT INTO Users(username,firstname,lastname) values('" + string + "','" + string2 + "','" + string3 + "');");
 
         disconnect();
-        return resultat;
+        return resultSet;
     }
 
     public static List<Activity> getAllActivities() throws SQLException {
         connect();
         List<Activity> resultlist = new ArrayList<Activity>();
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT * FROM Activites ;");
-        while (resultat.next()) {
-            resultlist.add(new Activity(resultat.getInt("id"), resultat.getString("name")));
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM Activites ;");
+        while (resultSet.next()) {
+            resultlist.add(new Activity(resultSet.getInt("id"), resultSet.getString("name")));
         }
         System.out.println(resultlist.get(0).getName());
         disconnect();
@@ -107,8 +107,8 @@ public class Activities_db {
         connect();
         Activity result = null;
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT Name FROM Activites where id =" + i + ";");
-        result = new Activity(i, resultat.getString("Name"));
+        ResultSet resultSet = statement.executeQuery("SELECT Name FROM Activites where id =" + i + ";");
+        result = new Activity(i, resultSet.getString("Name"));
         System.out.println(result.getName());
         disconnect();
         return null;
@@ -119,9 +119,9 @@ public class Activities_db {
         connect();
         List<Property> resultlist = new ArrayList<Property>();
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT * FROM Properties WHERE activity_id=" + i + ";");
-        while (resultat.next()) {
-            resultlist.add(new Property(resultat.getInt("id"), resultat.getInt("activity_id"), resultat.getString("name"), Value_type.valueOf(resultat.getString("value_type"))));
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM Properties WHERE activity_id=" + i + ";");
+        while (resultSet.next()) {
+            resultlist.add(new Property(resultSet.getInt("id"), resultSet.getInt("activity_id"), resultSet.getString("name"), Value_type.valueOf(resultSet.getString("value_type"))));
         }
         System.out.println(resultlist.get(0).getName());
         disconnect();
@@ -132,7 +132,7 @@ public class Activities_db {
     public static void removeActivityOf(String id) throws SQLException {
         connect();
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("remove from activites where id=" + id + ";");
+        ResultSet resultSet = statement.executeQuery("remove from activites where id=" + id + ";");
 
         disconnect();
     }
@@ -140,7 +140,7 @@ public class Activities_db {
     public static void removeSessionOf(String id, String userid) throws SQLException {
         connect();
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("remove from sessions where id=" + id + "and user_id=" + userid + " ;");
+        ResultSet resultSet = statement.executeQuery("remove from sessions where id=" + id + "and user_id=" + userid + " ;");
 
         disconnect();
     }
@@ -149,8 +149,8 @@ public class Activities_db {
         connect();
         User result = null;
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT * FROM Users where username='" + username + "';");
-        result = new User(resultat.getInt("id"), resultat.getString("username"), resultat.getString("firstname"), resultat.getString("lastname"));
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM Users where username='" + username + "';");
+        result = new User(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("firstname"), resultSet.getString("lastname"));
         disconnect();
         return result;
 
@@ -160,8 +160,8 @@ public class Activities_db {
         connect();
         User result = null;
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT * FROM Users where id='" + id + "';");
-        result = new User(resultat.getInt("id"), resultat.getString("username"), resultat.getString("firstname"), resultat.getString("lastname"));
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM Users where id='" + id + "';");
+        result = new User(resultSet.getInt("id"), resultSet.getString("username"), resultSet.getString("firstname"), resultSet.getString("lastname"));
         disconnect();
         return result;
 
@@ -172,8 +172,8 @@ public class Activities_db {
         connect();
         Activity result = null;
         Statement statement = conn.createStatement();
-        ResultSet resultat = statement.executeQuery("SELECT * FROM Activites where name=\'"+ activityName +"\';");
-        result = new Activity(resultat.getInt("id"), activityName);
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM Activites where name=\'"+ activityName +"\';");
+        result = new Activity(resultSet.getInt("id"), activityName);
         System.out.println(result.getName());
         disconnect();
         return result;
@@ -182,22 +182,31 @@ public class Activities_db {
     public static boolean createSession(int userId, int activityId, String date) throws SQLException {
         connect();
         Statement statement = conn.createStatement();
-        boolean resultat = statement.execute("INSERT INTO Sessions(user_id,activity_id,date) values(" + userId + "," + activityId+ "," + date + ");");
+        boolean resultSet = statement.execute("INSERT INTO Sessions(user_id,activity_id,date) values(" + userId + "," + activityId+ "," + date + ");");
 
         disconnect();
-        return resultat;
+        return resultSet;
     }
 
     public static boolean removeUser(String name) throws SQLException {
         connect();
         Statement statement = conn.createStatement();
-        boolean resultat = statement.execute(" DELETE FROM Users WHERE username=\'"+name+"\';");
+        boolean resultSet = statement.execute(" DELETE FROM Users WHERE username=\'"+name+"\';");
 
         disconnect();
-        return resultat;
+        return resultSet;
     }
 
     public static List<Session> getAllSessions() {
         return null;
+    }
+
+    public static boolean updateSession(String activity_id, String activityId, String id) throws SQLException {
+        connect();
+        Statement statement = conn.createStatement();
+        String query = "UPDATE sessions SET " + activity_id + "=" + activityId + " WHERE id=" + id + ";";
+
+        boolean resultSet = statement.execute(query);
+        return resultSet;
     }
 }

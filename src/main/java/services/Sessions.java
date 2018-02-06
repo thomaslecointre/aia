@@ -64,8 +64,31 @@ public class Sessions {
     @Path("/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     @JWTTokenNeeded
-    public Response modifySession(@QueryParam("id") String id) {
-        // TODO
+    public Response modifySession(@PathParam("id") String id, @QueryParam("activityName") String activityName, @QueryParam("date") String date) {
+        if (id == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("{id} parameter non existant.").build();
+        }
+        if (activityName == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("{activityName} parameter non existant.").build();
+        } else {
+            try {
+                Activity activity = Activities_db.getActivity(activityName);
+                int activityId = activity.getId();
+                boolean sqlError = Activities_db.updateSession("activity_id", Integer.toString(activityId), id);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        if (date == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("{date} parameter non existant.").build();
+        } else {
+            try {
+                boolean sqlError = Activities_db.updateSession("date", date, id);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         return null;
     }
 
